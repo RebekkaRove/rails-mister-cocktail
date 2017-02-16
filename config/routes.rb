@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'cocktalis#index'
   resources :cocktails, only: [:index, :show, :create, :new] do
     resources :doses, only: [:new, :create, :destroy]
   end
