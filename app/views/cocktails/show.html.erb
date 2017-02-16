@@ -1,15 +1,23 @@
-<h1><%= @cocktail.name %></h1>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+      <h1><%= @cocktail.name %></h1>
 
-<%= render "doses/form", cocktail: @cocktail, dose: @dose %>
-<ul>
-  <% @cocktail.doses.each do |dose| %>
-      <li>
-        <%= dose.ingredient.name%> <%= dose.description %>
-        <%= link_to "&times;".html_safe, dose_path(dose),
-              method: :delete,
-              data: { confirm: "Are you sure?" } %>
-      </li>
-    <% end %>
-</ul>
+      <ol>
+        <% @cocktail.doses.each do |dose| %>
+          <li> <%= dose.description %> of <%= dose.ingredient.name %>  </li>
+          <%= link_to "Delete", dose_path(dose), { class: "label label-danger", method: :delete } %>
+          <%= link_to "Other cocktails", ingredient_path(dose.ingredient) %>
+        <% end %>
+      </ol>
 
-<% link_to "Back to list", cocktails_path %>
+      <%= simple_form_for [@cocktail, @dose] do |f| %>
+        <%= f.input :description %>
+        <%= f.input :ingredient, collection: Ingredient.all, selected: "lemon"  %>
+        <%= f.submit "Submit", class: "btn btn-primary" %>
+      <% end %>
+
+      <%= link_to 'Back', cocktails_path %>
+    </div>
+  </div>
+</div>
